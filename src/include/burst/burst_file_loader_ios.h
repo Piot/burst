@@ -10,22 +10,22 @@
 typedef struct burst_pending_loading {
 	uint8_t* buffer;
 	unsigned long count;
-	burst_file_loader_callback callback;
+	BurstFileLoaderCallback callback;
 	void* user_data;
 } burst_pending_loading;
 
 extern burst_pending_loading g_burst_pending_loading;
 
-typedef struct burst_file_loader {
-	burst_file_loader_callback callback;
+typedef struct BurstFileLoader {
+	BurstFileLoaderCallback callback;
 	void* user_data;
 	const char* root_url;
-} burst_file_loader;
+} BurstFileLoader;
 
-void burst_file_loader_init(struct burst_file_loader* self, const char* url);
+void burstFileLoaderInit(struct BurstFileLoader* self, const char* url);
 
-void burst_file_loader_load(burst_file_loader* self, const char* url, void* user_data, burst_file_loader_callback callback);
+void burstFileLoaderLoad(BurstFileLoader* self, const char* url, void* user_data, BurstFileLoaderCallback callback);
 
-void burst_file_loader_poll(burst_file_loader* self);
+void burstFileLoaderPoll(BurstFileLoader* self);
 
 #endif

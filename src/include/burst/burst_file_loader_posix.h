@@ -7,14 +7,14 @@
 
 #include <burst/burst_file_loader_common.h>
 
-typedef struct burst_file_entry {
+typedef struct BurstFileEntry {
     const char *url;
     void *user_data;
-    burst_file_loader_callback callback;
-} burst_file_entry;
+    BurstFileLoaderCallback callback;
+} BurstFileEntry;
 
-typedef struct burst_file_loader {
-    burst_file_entry entries[64];
+typedef struct BurstFileLoader {
+    BurstFileEntry entries[64];
     int entry_index;
     int read_entry_index;
     int dummy;
@@ -22,11 +22,11 @@ typedef struct burst_file_loader {
     int max_count;
     int verboseFlag;
     int shouldSimulateLoadDelay;
-} burst_file_loader;
+} BurstFileLoader;
 
-void burst_file_loader_init(struct burst_file_loader* self, const char* url);
-void burst_file_loader_destroy(struct burst_file_loader* self);
-void burst_file_loader_load(burst_file_loader* self, const char* url, void* user_data, burst_file_loader_callback callback);
-void burst_file_loader_poll(burst_file_loader* self);
+void burstFileLoaderInit(struct BurstFileLoader* self, const char* url);
+void burstFileLoaderDestroy(struct BurstFileLoader* self);
+void burstFileLoaderLoad(BurstFileLoader* self, const char* url, void* user_data, BurstFileLoaderCallback callback);
+void burstFileLoaderPoll(BurstFileLoader* self);
 
 #endif

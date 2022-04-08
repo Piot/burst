@@ -10,16 +10,16 @@
 #include <emscripten/emscripten.h>
 #include <emscripten/fetch.h>
 
-typedef struct burst_file_loader {
+typedef struct BurstFileLoader {
 	struct emscripten_fetch_attr_t attr;
-	burst_file_loader_callback callback;
+	BurstFileLoaderCallback callback;
 	void* user_data;
-} burst_file_loader;
+} BurstFileLoader;
 
-void burst_file_loader_init(struct burst_file_loader* self, const char* url);
+void burstFileLoaderInit(struct BurstFileLoader* self, const char* url);
 
-void burst_file_loader_load(burst_file_loader* self, const char* url, void* user_data, burst_file_loader_callback callback);
+void burstFileLoaderLoad(BurstFileLoader* self, const char* url, void* user_data, BurstFileLoaderCallback callback);
 
-void burst_file_loader_poll(burst_file_loader* self);
+void burstFileLoaderPoll(BurstFileLoader* self);
 
 #endif

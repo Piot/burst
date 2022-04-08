@@ -7,7 +7,7 @@
 #include <mocha/log.h>
 #include <tiny-libc/tiny_libc.h>
 
-static void download_succeeded(struct emscripten_fetch_t *fetch)
+static void downloadSucceeded(struct emscripten_fetch_t *fetch)
 {
 	burst_file_loader *self = (burst_file_loader *)fetch->userData;
 
@@ -18,14 +18,14 @@ static void download_succeeded(struct emscripten_fetch_t *fetch)
 	self->callback(self->user_data, octets, (int32_t)octet_count);
 }
 
-static void download_failed(struct emscripten_fetch_t *fetch)
+static void downloadFailed(struct emscripten_fetch_t *fetch)
 {
 	burst_file_loader *self = (burst_file_loader *)fetch->userData;
 
 	MOCHA_LOG("Download failed ! %p ", (void *)self);
 }
 
-void burst_file_loader_init(burst_file_loader *self, const char *url)
+void burstFileLoaderInit(burst_file_loader *self, const char *url)
 {
 	(void)url;
 
@@ -34,12 +34,12 @@ void burst_file_loader_init(burst_file_loader *self, const char *url)
 	emscripten_fetch_attr_init(attr);
 	tc_strncpy(attr->requestMethod, 20, "GET", 3);
 	attr->attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
-	attr->onsuccess = download_succeeded;
-	attr->onerror = download_failed;
+	attr->onsuccess = downloadSucceeded;
+	attr->onerror = downloadFailed;
 	attr->userData = self;
 }
 
-void burst_file_loader_load(burst_file_loader *self, const char *url, void *user_data, burst_file_loader_callback callback)
+void burstFileLoaderLoad(burst_file_loader *self, const char *url, void *user_data, burst_file_loader_callback callback)
 {
 	char temp[150];
 
@@ -52,7 +52,7 @@ void burst_file_loader_load(burst_file_loader *self, const char *url, void *user
 	emscripten_fetch(&self->attr, temp);
 }
 
-void burst_file_loader_poll(burst_file_loader *self)
+void burstFileLoaderPoll(burst_file_loader *self)
 {
 	(void)self;
 

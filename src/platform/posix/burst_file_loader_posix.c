@@ -9,7 +9,7 @@
 #include <string.h>
 #include <tiny-libc/tiny_libc.h>
 
-void burst_file_loader_init(burst_file_loader *self, const char *url)
+void burstFileLoaderInit(BurstFileLoader *self, const char *url)
 {
 	tc_mem_clear_type(self);
     self->max_count = 64;
@@ -19,12 +19,12 @@ void burst_file_loader_init(burst_file_loader *self, const char *url)
 }
 
 
-void burst_file_loader_destroy(burst_file_loader* self)
+void burstFileLoaderDestroy(BurstFileLoader* self)
 {
 
 }
 
-static int load(const char *url, void *user_data, burst_file_loader_callback callback)
+static int load(const char *url, void *user_data, BurstFileLoaderCallback callback)
 {
 	static char temp[150];
 
@@ -53,11 +53,11 @@ static int load(const char *url, void *user_data, burst_file_loader_callback cal
 	return 0;
 }
 
-static int find_user_data(const burst_file_loader *self, void* user_data)
+static int findUserData(const BurstFileLoader *self, void* user_data)
 {
 	for (int i=0; i<self->max_count; ++i) 
 	{
-		const burst_file_entry* entry = &self->entries[i];
+		const BurstFileEntry* entry = &self->entries[i];
 		if (entry->user_data == user_data) {
 			return i;
 		}
@@ -65,30 +65,30 @@ static int find_user_data(const burst_file_loader *self, void* user_data)
 	return -1;
 }
 
-void burst_file_loader_load(burst_file_loader *self, const char *url, void *user_data, burst_file_loader_callback callback)
+void burstFileLoaderLoad(BurstFileLoader *self, const char *url, void *user_data, BurstFileLoaderCallback callback)
 {
     if (self->verboseFlag) {
         CLOG_DEBUG("burst: schedule '%s' (%d) %p", url, self->entry_index, user_data);
     }
-	int found_index = find_user_data(self, user_data);
+	int found_index = findUserData(self, user_data);
 	if (found_index != -1) {
 		CLOG_ERROR("user data is not unique! '%s' (%p)", url, user_data)
         return;
 	}
-	burst_file_entry* entry = &self->entries[self->entry_index];
+	BurstFileEntry* entry = &self->entries[self->entry_index];
 	self->entry_index = (self->entry_index + 1)%self->max_count;
 	entry->user_data = user_data;
 	entry->url = tc_str_dup(url);
 	entry->callback = callback;
 }
 
-static int loadOneFile(burst_file_loader *self)
+static int loadOneFile(BurstFileLoader *self)
 {
     if (self->entry_index == self->read_entry_index) {
         return 0;
     }
 
-    burst_file_entry* entry = &self->entries[self->read_entry_index];
+    BurstFileEntry* entry = &self->entries[self->read_entry_index];
 
     if (self->verboseFlag) {
         CLOG_DEBUG("burst: reading '%s' (%d) %p", entry->url, self->read_entry_index, entry->user_data);
@@ -111,7 +111,7 @@ static int loadOneFile(burst_file_loader *self)
     return 1;
 }
 
-void burst_file_loader_poll(burst_file_loader *self)
+void burstFileLoaderPoll(BurstFileLoader *self)
 {
     if (self->shouldSimulateLoadDelay) {
         self->wait++;

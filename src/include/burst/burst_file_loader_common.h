@@ -7,9 +7,9 @@
 
 #include <stdint.h>
 
-struct burst_file_loader;
+struct BurstFileLoader;
 
-typedef void (*burst_file_loader_callback)(void* user_data, const uint8_t* octets, int32_t result);
-void file_loader_load(struct burst_file_loader* self, const char* url, void* user_data, burst_file_loader_callback callback);
+typedef void (*BurstFileLoaderCallback)(void* user_data, const uint8_t* octets, int32_t result);
+void burstFileLoaderLoad(struct BurstFileLoader* self, const char* url, void* user_data, BurstFileLoaderCallback callback);
 
 #endif

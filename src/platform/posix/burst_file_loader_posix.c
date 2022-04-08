@@ -38,7 +38,7 @@ static int load(const char *url, void *user_data, BurstFileLoaderCallback callba
     fseek(f, 0, SEEK_END);
     long fileSize = ftell(f);
     fseek(f, 0, SEEK_SET);  /* same as rewind(f); */
-    uint8_t *contents = malloc(fileSize);
+    uint8_t *contents = tc_malloc(fileSize);
     fread(contents, fileSize, 1, f);
     fclose(f);
 
@@ -48,7 +48,7 @@ static int load(const char *url, void *user_data, BurstFileLoaderCallback callba
 
     tc_memset_octets(contents, 0xfb, fileSize);
 
-    free(contents);
+    tc_free(contents);
 
 	return 0;
 }
